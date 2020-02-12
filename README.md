@@ -4,7 +4,7 @@ This game is part of Udacity's Front-End Web Developer Nanodegree program. The A
 
 # Demo
 
-![]()
+![](images/demo.gif)
 
 -   [Play it here]()
 
