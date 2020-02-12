@@ -6,7 +6,6 @@ This game is part of Udacity's Front-End Web Developer Nanodegree program. The A
 
 ![](images/demo.gif)
 
--   [Play it here]()
 
 ## Getting Started & Installation
 
