@@ -12,6 +12,10 @@ var Enemy = function(x, y, speed) {
     this.sprite = "images/enemy-bug.png";
 };
 
+// Variables to use in the score message
+let score = 0;
+let scoreMessage = document.querySelector("h4");
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -22,8 +26,9 @@ Enemy.prototype.update = function(dt) {
     //505 is size of canvas height
     if (this.x > 505) {
         this.x = -50;
-        this.speed = 100 + Math.floor(Math.random() * 222);
+        this.speed = 100 + Math.floor(Math.random() * 322);
     }
+    //---Checking for collision--- If the player collides with the enemy, the player will be returned to his original position
 
     if (
         player.x < this.x + 80 &&
@@ -32,7 +37,7 @@ Enemy.prototype.update = function(dt) {
         60 + player.y > this.y
     ) {
         player.x = 200;
-        player.y = 405;
+        player.y = 402;
     }
 };
 
@@ -53,54 +58,49 @@ var Player = function(x, y, speed) {
 };
 Player.prototype.update = function(dt) {};
 
-Player.prototype.resetPosition = function() {
-    this.x = 300;
-    this.y = 400;
-};
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
+//each keypress is for various arrow keys to move player sprite forward or back
 Player.prototype.handleInput = function(keyPress) {
     if (keyPress == "left" && this.x > 0) {
         this.x -= 40;
     }
-
     if (keyPress == "right" && this.x < 400) {
         this.x += 40;
     }
     if (keyPress == "up" && this.y > 0) {
-        this.y -= 40;
+        this.y -= 55;
     }
-    if (keyPress == "down" && this.y < 400) {
-        this.y += 40;
+    if (keyPress == "down" && this.y < 402) {
+        this.y += 67;
     }
 
     // Once the user reaches the top of the page; the water, the user is
     // Instantly reset to the starting position
-    if (this.y < 0) {
+    if (this.y <= 0) {
         setTimeout(() => {
             this.x = 200;
-            this.y = 400;
-        }, 500);
+            this.y = 402;
+            score = score + 1;
+            scoreMessage.innerText =
+                "Amount of times you made it to the water: " + score;
+        }, 100);
     }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
-var scoreDiv = document.createElement("div");
 
 // Place the player object in a variable called player
 var enemyPosition = [60, 140, 220];
-var player = new Player(200, 400, 50);
+var player = new Player(200, 402, 50);
 var enemy;
-
 enemyPosition.forEach(function(positionY) {
     enemy = new Enemy(0, positionY, 100 + Math.floor(Math.random() * 512));
     allEnemies.push(enemy);
 });
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", function(e) {
